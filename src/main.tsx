@@ -1,9 +1,9 @@
 import "./index.css";
+import  "@/configs/env"
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, useRoutes } from "react-router-dom";
 import routes from "~react-pages";
-
 function Main() {
   return <>{useRoutes(routes)}</>;
 }
