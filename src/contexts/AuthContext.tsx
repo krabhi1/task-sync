@@ -3,6 +3,7 @@ import { useImmer } from "use-immer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/configs/firebase";
+import { useToast } from "@/hooks/use-toast";
 
 export type AuthContextType = {};
 
@@ -22,6 +23,8 @@ export function AuthProvider({
   const location = useLocation();
   const path = location.pathname;
   const navigate = useNavigate();
+  const { toast } = useToast();
+
   const isProtected = !unprotectedPaths.includes(path);
 
   useEffect(() => {
@@ -30,9 +33,13 @@ export function AuthProvider({
       navigate("/signin");
     }
     if (error) {
-      alert("error \n" + error?.message);
+      toast({
+        title: "Error: " + error.name,
+        description: error.message,
+        variant: "destructive",
+      });
     }
-  }, [user, loading, error, isProtected]);
+  }, [user, loading, error, isProtected,toast]);
 
   //redirect to signin
   if (loading) return "Loading...";

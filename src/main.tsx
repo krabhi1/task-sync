@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, useRoutes } from "react-router-dom";
 import routes from "~react-pages";
 import { AuthProvider } from "./contexts/AuthContext";
+import { Toaster } from "./components/ui/toaster";
 function Main() {
   return <>{useRoutes(routes)}</>;
 }
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
     >
       <AuthProvider unProtectedPaths={["/signin", "/signup","forget-password"]}>
         <Main />
+        <Toaster/>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

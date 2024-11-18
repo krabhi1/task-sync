@@ -15,8 +15,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { auth } from "@/configs/firebase";
+import { useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -24,6 +28,8 @@ const formSchema = z.object({
 });
 
 export default function Signin() {
+  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,7 +37,29 @@ export default function Signin() {
       password: "",
     },
   });
-  const isLoading = false;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (user) {
+      //redirect to / if not previous route exist
+      if (location.key !== "default") {
+        navigate(-1);
+      } else {
+        navigate("/");
+      }
+    }
+    if (error) {
+      toast({
+        title: "Error: " + error.name,
+        description: error.message,
+        variant:"destructive"
+      });
+    }
+  }, [error, user, location, toast]);
+
+  const isLoading = loading;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -44,7 +72,10 @@ export default function Signin() {
         </CardHeader>
         <CardContent className="flex flex-col ">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 flex flex-col">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-2 flex flex-col"
+            >
               <FormField
                 control={form.control}
                 name="email"
@@ -61,6 +92,7 @@ export default function Signin() {
                     <FormMessage />
                   </FormItem>
                 )}
+                disabled={isLoading}
               />
               <FormField
                 control={form.control}
@@ -79,6 +111,7 @@ export default function Signin() {
                     <FormMessage />
                   </FormItem>
                 )}
+                disabled={isLoading}
               />
               <Button className="block" variant={"link"}>
                 <Link to="/forget-password">Forget password?</Link>
@@ -98,7 +131,10 @@ export default function Signin() {
             </form>
           </Form>
           <Separator className="my-2" />
-          <Button>Signin with Google</Button>
+          <Button disabled={isLoading} onClick={() => signInWithGoogle()}>
+            {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+            Signin with Google
+          </Button>
         </CardContent>
       </Card>
     </div>
