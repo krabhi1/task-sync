@@ -6,7 +6,7 @@ import CompletedTasks from "./CompletedTasks";
 
 export default function MainContent() {
   return (
-    <div className="">
+    <div className="flex-grow flex flex-col overflow-auto">
       {/* Header */}
       <div className="mx-6 my-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -29,17 +29,19 @@ export default function MainContent() {
         </div>
       </div>
       {/* addtask and tasks */}
-      <div className="mx-6  h-full">
+      <div className="mx-6 flex flex-col flex-grow overflow-auto">
         <AddTask />
-
-        {/* tasks */}
-        <div className="flex flex-col gap-2 mt-3 ">
-          <TaskView />
-          <TaskView />
-          <TaskView />
+        <div className=" overflow-auto  flex-grow">
+          {/* tasks */}
+          <div className="flex flex-col gap-2 mt-3 ">
+            <TaskView />
+            <TaskView />
+            <TaskView />
+            <TaskView />
+          </div>
+          {/* completed task */}
+          <CompletedTasks />
         </div>
-        {/* completed task */}
-        <CompletedTasks />
       </div>
     </div>
   );

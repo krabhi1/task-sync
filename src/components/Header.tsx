@@ -9,7 +9,7 @@ export default function Header() {
   const { photoUrl, name } = useAuth();
   console.log(photoUrl);
   return (
-    <div className="w-full h-12  px-2 py-1 flex justify-between items-center shadow-md">
+    <div className=" h-12  px-2 py-1 flex justify-between items-center shadow-md">
       <div className="">
         {/* <span>
           <img width={"30px"} height={"30px"} src="/task-sync.svg" alt="Logo" />
