@@ -31,3 +31,13 @@ export function findFalsyKeys(
     return falsy.includes(valueType as Falsy);
   });
 }
+
+export function avatarFallback(name: string) {
+  return name.split(' ').reduce((out, v) => {
+    if (v[0]) {
+      out += v[0].toUpperCase()
+    }
+    return out
+  }, "")
+
+}
