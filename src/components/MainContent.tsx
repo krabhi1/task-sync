@@ -1,6 +1,8 @@
 import { ArrowUpDown, Ellipsis, Menu, UserPlus } from "lucide-react";
 import { Button } from "./ui/button";
 import AddTask from "./AddTask";
+import TaskView from "./TaskView";
+import CompletedTasks from "./CompletedTasks";
 
 export default function MainContent() {
   return (
@@ -31,7 +33,13 @@ export default function MainContent() {
         <AddTask />
 
         {/* tasks */}
+        <div className="flex flex-col gap-2 mt-3 ">
+          <TaskView />
+          <TaskView />
+          <TaskView />
+        </div>
         {/* completed task */}
+        <CompletedTasks />
       </div>
     </div>
   );
