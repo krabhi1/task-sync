@@ -17,9 +17,11 @@ createRoot(document.getElementById("root")!).render(
         v7_startTransition: true,
       }}
     >
-      <AuthProvider unProtectedPaths={["/signin", "/signup","forget-password"]}>
+      <AuthProvider
+        unProtectedPaths={["/signin", "/signup", "/forget-password"]}
+      >
         <Main />
-        <Toaster/>
+        <Toaster />
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

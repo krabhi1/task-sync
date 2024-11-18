@@ -5,7 +5,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/configs/firebase";
 import { useToast } from "@/hooks/use-toast";
 
-export type AuthContextType = {};
+export type AuthContextType = {
+  email: string;
+  uid: string;
+  name: string;
+  photoUrl: string;
+};
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 type AuthContextProviderProps = React.PropsWithChildren<{
@@ -17,7 +22,12 @@ export function AuthProvider({
   unProtectedPaths,
 }: AuthContextProviderProps) {
   const unprotectedPaths = unProtectedPaths || ["/signin", "/signup"];
-  const [authData, setAuthData] = useImmer<AuthContextType>({});
+  const [authData, setAuthData] = useImmer<AuthContextType>({
+    name: "",
+    email: "",
+    photoUrl: "",
+    uid: "",
+  });
   const [user, loading, error] = useAuthState(auth);
 
   const location = useLocation();
@@ -39,13 +49,23 @@ export function AuthProvider({
         variant: "destructive",
       });
     }
-  }, [user, loading, error, isProtected,toast]);
-
+  }, [user, loading, error, isProtected, toast]);
+  useEffect(() => {
+    if (user) {
+      setAuthData({
+        name: user.displayName || "",
+        email: user.email || "",
+        photoUrl: user.photoURL || "",
+        uid: user.uid,
+      });
+    }
+  }, [user]);
   //redirect to signin
   if (loading) return "Loading...";
   if (!user && isProtected) {
     return null;
   }
+  console.log("user", user);
   return (
     <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>
   );
