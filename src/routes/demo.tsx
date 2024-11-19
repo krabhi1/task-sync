@@ -1,4 +1,4 @@
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollection as useColl } from "react-firebase-hooks/firestore";
 import {
   addDoc,
   collection,
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { store } from "@/configs/firebase";
 import { signOut, toDate } from "@/lib/fire-utils";
 import { useAuth } from "@/hooks/use-auth";
+import { useCollection } from "@/hooks/use-collection";
 type Task = {
   uid: string;
   name: string;
@@ -30,11 +31,21 @@ function addTask(task: CreateTask) {
     ...task,
   });
 }
-
 export default function Demo() {
+  return (
+    <div>
+      <div className="p-2 border">
+        <Button onClick={signOut}>SignOut</Button>
+      </div>
+      <Example_Collection />
+      {/* <Example_1 /> */}
+    </div>
+  );
+}
+function Example_1() {
   const { uid, name, email } = useAuth();
   const q = query(collection(store, "tasks"), where("uid", "==", uid));
-  const [value, loading, error] = useCollection(q, {
+  const [value, loading, error] = useColl(q, {
     snapshotListenOptions: { includeMetadataChanges: true },
   });
   const tasks: Task[] = value
@@ -56,9 +67,6 @@ export default function Demo() {
       <p>
         {uid} {name} {email}
       </p>
-      <div className="p-2 border">
-        <Button onClick={signOut}>SignOut</Button>
-      </div>
       <div>
         <Button
           onClick={() =>
@@ -90,6 +98,23 @@ export default function Demo() {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function Example_Collection() {
+  const { collections, addCollection } = useCollection();
+  console.log({ collections });
+  return (
+    <div>
+      <Button
+        onClick={() =>
+          addCollection({ name: "Collection " + collection.length })
+        }
+      >
+        Add Coll
+      </Button>
+      <code className="text-sm  ">{JSON.stringify(collections)}</code>
     </div>
   );
 }

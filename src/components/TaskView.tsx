@@ -5,7 +5,7 @@ import { Label } from "./ui/label";
 
 export default function TaskView() {
   return (
-    <div className="flex items-center px-5 justify-between h-[50px] shadow-sm border ">
+    <div className="flex items-center px-5 justify-between h-[50px] shadow-sm border rounded-sm">
       <div className="flex items-center gap-2  ">
         <Checkbox />
         <Label>UI design</Label>

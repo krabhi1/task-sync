@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 
 export default function AddTask() {
   return (
-    <div className=" flex flex-col shadow-sm border">
+    <div className=" flex flex-col shadow-sm border rounded-sm">
       <div className="flex items-center mx-5 gap-2 mt-3">
         <Checkbox />
         <Input />

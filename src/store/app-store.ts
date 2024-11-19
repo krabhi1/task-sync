@@ -14,7 +14,7 @@ type StateAndAction = State & Action
 
 const _useAppStore = create<StateAndAction>()(
     immer((set, get) => ({
-        isLeftSidebarOpen: false,
+        isLeftSidebarOpen: true,
         toggleLeftSideBar() {
             set(d => {
                 d.isLeftSidebarOpen = !d.isLeftSidebarOpen
