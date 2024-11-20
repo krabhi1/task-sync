@@ -2,12 +2,21 @@ import { HomeIcon, ListIcon, UserIcon, Users2Icon } from "lucide-react";
 export default function CollectionListItem({
   id,
   name,
+  onClick,
+  isSelected,
 }: {
   id: string;
   name: string;
+  onClick?: (id: string) => void;
+  isSelected?: boolean;
 }) {
   return (
-    <div className="w-full hover:bg-red-50 py-2">
+    <div
+      className={`cursor-pointer w-full hover:bg-blue-50 py-2 ${
+        isSelected && "!bg-blue-100"
+      }`}
+      onClick={() => onClick?.(id)}
+    >
       <div className="mx-8 flex items-center justify-between ">
         <div className="flex items-center gap-2">
           <HomeIcon size={"16px"} />

@@ -2,13 +2,15 @@ import { Bell, CalendarDays, Repeat } from "lucide-react";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Input } from "./ui/input";
+import { useState } from "react";
 
-export default function AddTask() {
+export default function AddTask({ onAdd }: { onAdd?: (name: string) => void }) {
+  const [text, setText] = useState("");
   return (
     <div className=" flex flex-col shadow-sm border rounded-sm">
       <div className="flex items-center mx-5 gap-2 mt-3">
         <Checkbox />
-        <Input />
+        <Input value={text} onChange={(e) => setText(e.target.value)} />
       </div>
       <div className="flex items-center justify-between p-2">
         <div className="flex gap-2 items-center   ">
@@ -22,7 +24,15 @@ export default function AddTask() {
             <Repeat />
           </Button>
         </div>
-        <Button size={"sm"}>Add</Button>
+        <Button
+          onClick={() => {
+            text.trim().length > 0 && onAdd?.(text);
+            setText("");
+          }}
+          size={"sm"}
+        >
+          Add
+        </Button>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { Menu, PlusIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import { useLeftSidebar } from "@/store/app-store";
+import { useAppStore, useLeftSidebar } from "@/store/app-store";
 import { ScrollArea } from "./ui/scroll-area";
 import TaskView from "./TaskView";
 import CollectionListItem from "./CollectionListItem";
@@ -12,13 +12,19 @@ export default function LeftSidePanel() {
   const { isLeftSidebarOpen, toggleLeftSideBar } = useLeftSidebar();
   const { collections, addCollection } = useCollection();
   const [inputValue, setInputValue] = useState("");
-  if (!isLeftSidebarOpen) return null;
+
+  const { selectedCollection, setSelectedCollection } = useAppStore((s) => ({
+    selectedCollection: s.selectedCollection,
+    setSelectedCollection: s.setSelectedCollection,
+  }));
   function onInput(e: React.KeyboardEvent<HTMLInputElement>) {
     if (inputValue.trim().length > 0 && e.key == "Enter") {
       addCollection({ name: inputValue });
       setInputValue("");
     }
   }
+  if (!isLeftSidebarOpen) return null;
+
   return (
     <div className="w-[250px] h-full overflow-auto flex flex-col">
       <div className="mx-6 my-4 flex items-center justify-between">
@@ -34,7 +40,13 @@ export default function LeftSidePanel() {
       </div>
       <ScrollArea className="flex-1">
         {collections.map((c) => (
-          <CollectionListItem key={c.id} name={c.name} id={c.id} />
+          <CollectionListItem
+            onClick={setSelectedCollection}
+            key={c.id}
+            name={c.name}
+            id={c.id}
+            isSelected={c.id === selectedCollection}
+          />
         ))}
       </ScrollArea>
       <div className="w-full flex p-2 items-center gap-2">

@@ -4,9 +4,13 @@ import { useShallow } from "zustand/react/shallow";
 
 type State = {
     isLeftSidebarOpen: boolean
+    selectedCollection?: string;
+    selectedTask?: string;
 }
 type Action = {
     toggleLeftSideBar: () => void
+    setSelectedCollection: (name: string) => void;
+    setSelectedTask: (name: string) => void;
 }
 
 type StateAndAction = State & Action
@@ -18,6 +22,16 @@ const _useAppStore = create<StateAndAction>()(
         toggleLeftSideBar() {
             set(d => {
                 d.isLeftSidebarOpen = !d.isLeftSidebarOpen
+            })
+        },
+        setSelectedCollection(name) {
+            set(d => {
+                d.selectedCollection = name
+            })
+        },
+        setSelectedTask(name) {
+            set(d => {
+                d.selectedTask = name;
             })
         },
     })

@@ -11,13 +11,12 @@ export type Collection = {
     name: string;
     createdAt: Date;
     updatedAt: Date;
-    tasks: Task[]
 }
 
 export type CreateCollection = UpdateType<Collection, {
     createdAt: Timestamp;
     updatedAt: Timestamp;
-}, 'createdAt' | 'id' | 'updatedAt' | 'tasks'>
+}, 'createdAt' | 'id' | 'updatedAt'>
 
 
 

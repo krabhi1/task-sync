@@ -1,4 +1,7 @@
-import { useCollection as useColl } from "react-firebase-hooks/firestore";
+import {
+  useCollection as useColl,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
 import {
   addDoc,
   collection,
@@ -103,8 +106,15 @@ function Example_1() {
 }
 
 function Example_Collection() {
+  const { uid } = useAuth();
   const { collections, addCollection } = useCollection();
-  console.log({ collections });
+  const [value] = useCollectionData(
+    query(
+      collection(store, "collections", "Cd0qzwIZO1WiWSgzQJAf", "tasks"),
+      where("userId", "==", uid)
+    )
+  );
+  console.log({ collections, value });
   return (
     <div>
       <Button

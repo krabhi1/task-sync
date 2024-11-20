@@ -34,29 +34,21 @@ export function useCollection() {
                     id: doc.id,
                     createdAt: toDate(doc.data().createdAt),
                     updatedAt: toDate(doc.data().updatedAt),
-                    tasks: []
 
                 } as Collection)
             )
             : [];
     }, [value])
     const addCollection = useCallback(async (pColl: Pick<Collection, 'name'>) => {
-        const nums = [1, 2, 3, 4]
-        const tasks = nums.map(i => ({
-            name: "Task " + i,
-            createdAt: Timestamp.now(),
-            updatedAt: Timestamp.now(),
-            status: "working"
-        }) as CreateTask)
+
         const createColl: CreateCollection = {
             name: pColl.name,
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
             userId: uid
         }
-        const collDoc = await addDoc(collection(store, "collections"), createColl)
+        addDoc(collection(store, "collections"), createColl)
 
-        tasks.forEach(task => addDoc(collection(store, "collections", collDoc.id, "tasks"), task))
     }, [uid])
 
     return { collections, addCollection }

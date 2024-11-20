@@ -7,7 +7,6 @@ import { avatarFallback } from "@/lib/utils";
 
 export default function Header() {
   const { photoUrl, name } = useAuth();
-  console.log(photoUrl);
   return (
     <div className=" h-12  px-2 py-1 flex justify-between items-center shadow-md">
       <div className="">
