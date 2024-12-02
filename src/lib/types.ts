@@ -1,35 +1,46 @@
 import { Timestamp } from "firebase/firestore";
 
-export type PartialOnly<T, P extends keyof T> = Omit<Task, P> & Partial<Pick<T, P>>
-export type UpdateType<T, N, R extends keyof T = never, P extends keyof T = never> =
-    Omit<T, R | P> & N & Partial<Pick<T, P>>;
-
+export type PartialOnly<T, P extends keyof T> = Omit<Task, P> &
+  Partial<Pick<T, P>>;
+export type UpdateType<
+  T,
+  N,
+  R extends keyof T = never,
+  P extends keyof T = never
+> = Omit<T, R | P> & N & Partial<Pick<T, P>>;
 
 export type Collection = {
-    id: string;
-    userId: string;
-    name: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
+  id: string;
+  userId: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-export type CreateCollection = UpdateType<Collection, {
+export type CreateCollection = UpdateType<
+  Collection,
+  {
     createdAt: Timestamp;
     updatedAt: Timestamp;
-}, 'createdAt' | 'id' | 'updatedAt'>
-
-
+  },
+  "createdAt" | "id" | "updatedAt"
+>;
 
 export type Task = {
-    id: string;
-    name: string;
-    description?: string;
-    status: "pending" | "working" | "completed";
-    createdAt: Date;
-    updatedAt: Date;
-}
+  id: string;
+  collectionId: string;
+  name: string;
+  description?: string;
+  status: "pending" | "working" | "completed";
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-export type CreateTask = UpdateType<Task, {
+export type CreateTask = UpdateType<
+  Task,
+  {
     createdAt: Timestamp;
     updatedAt: Timestamp;
-}, 'createdAt' | 'id' | 'updatedAt'>
+  },
+  "createdAt" | "id" | "updatedAt" | "collectionId"
+>;

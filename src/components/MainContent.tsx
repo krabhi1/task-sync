@@ -2,7 +2,6 @@ import { ArrowUpDown, Ellipsis, Menu, Star, UserPlus } from "lucide-react";
 import { Button } from "./ui/button";
 import AddTask from "./AddTask";
 import TaskView from "./TaskView";
-import CompletedTasks from "./CompletedTasks";
 import { useAppStore, useLeftSidebar } from "@/store/app-store";
 import { ScrollArea } from "./ui/scroll-area";
 import { useTask } from "@/hooks/use-task";
@@ -11,17 +10,24 @@ export default function MainContent({ cId }: { cId?: string }) {
   const { isLeftSidebarOpen, toggleLeftSideBar } = useLeftSidebar();
 
   return (
-    <div className="flex-grow flex flex-col overflow-auto">
+    <div className="flex-grow flex flex-col h-full  ">
       {/* Header */}
       <div className="mx-6 my-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Button
-            onClick={() => !isLeftSidebarOpen && toggleLeftSideBar()}
-            variant="ghost"
-            size="icon"
-          >
-            {isLeftSidebarOpen ? <Star /> : <Menu />}
-          </Button>
+          {isLeftSidebarOpen ? (
+            <Button variant="ghost" size="icon">
+              <Star />
+            </Button>
+          ) : (
+            <Button
+              onClick={() => toggleLeftSideBar()}
+              variant="ghost"
+              size="icon"
+            >
+              <Menu />
+            </Button>
+          )}
+
           <span>Collection 1</span>
           <Button variant="ghost" size="icon">
             <Ellipsis />
@@ -57,11 +63,11 @@ function TaskContent({ cid }: { cid: string }) {
   }));
 
   return (
-    <div className="mx-6 flex flex-col flex-grow overflow-auto">
+    <div className="mx-6 flex flex-col   h-full overflow-hidden gap-2">
       <AddTask onAdd={(name) => addTask(cid, name)} />
-      <ScrollArea className=" overflow-auto  flex-grow">
+      <ScrollArea className=" flex-1 my-2">
         {/* tasks */}
-        <div className="flex flex-col gap-2 mt-3 ">
+        <div className="flex flex-col gap-2 ">
           {tasks.map((t) => (
             <TaskView
               key={t.id}
