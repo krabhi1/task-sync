@@ -2,7 +2,7 @@ import { store } from "@/configs/firebase";
 import { toDate } from "@/lib/fire-utils";
 import { CreateCollection, CreateTask, Task } from "@/lib/types";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCollection as _useColl } from "react-firebase-hooks/firestore";
 
 export function useTask(collectionId: string) {
@@ -20,6 +20,10 @@ export function useTask(collectionId: string) {
     };
     addDoc(collection(store, "collections", collectionId, "tasks"), task);
   }, []);
+  const [isFirstLoading, setIsFirstLoading] = useState(true);
+  useEffect(() => {
+    if (isFirstLoading && value) setIsFirstLoading(false);
+  }, [value]);
 
   const tasks: Task[] = useMemo(() => {
     return value
@@ -37,6 +41,5 @@ export function useTask(collectionId: string) {
         )
       : [];
   }, [value]);
-
-  return { tasks, addTask };
+  return { tasks, addTask, loading: isFirstLoading };
 }

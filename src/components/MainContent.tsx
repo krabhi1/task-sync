@@ -1,10 +1,19 @@
-import { ArrowUpDown, Ellipsis, Menu, Star, UserPlus } from "lucide-react";
+import {
+  ArrowUpDown,
+  Ellipsis,
+  ListIcon,
+  LoaderIcon,
+  Menu,
+  Star,
+  UserPlus,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import AddTask from "./AddTask";
 import TaskView from "./TaskView";
 import { useAppStore, useLeftSidebar } from "@/store/app-store";
 import { ScrollArea } from "./ui/scroll-area";
 import { useTask } from "@/hooks/use-task";
+import { Skeleton } from "./ui/skeleton";
 
 export default function MainContent({ cId }: { cId?: string }) {
   const { isLeftSidebarOpen, toggleLeftSideBar } = useLeftSidebar();
@@ -15,9 +24,7 @@ export default function MainContent({ cId }: { cId?: string }) {
       <div className="mx-6 my-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {isLeftSidebarOpen ? (
-            <Button variant="ghost" size="icon">
-              <Star />
-            </Button>
+            <ListIcon size={20} />
           ) : (
             <Button
               onClick={() => toggleLeftSideBar()}
@@ -56,32 +63,39 @@ export default function MainContent({ cId }: { cId?: string }) {
 }
 
 function TaskContent({ cid }: { cid: string }) {
-  const { tasks, addTask } = useTask(cid);
+  const { tasks, addTask, loading } = useTask(cid);
   const { selectedTask, setSelectedTask } = useAppStore((s) => ({
     selectedTask: s.selectedTask,
     setSelectedTask: s.setSelectedTask,
   }));
-
   return (
     <div className="mx-6 flex flex-col   h-full overflow-hidden gap-2">
       <AddTask onAdd={(name) => addTask(cid, name)} />
-      <ScrollArea className=" flex-1 my-2">
-        {/* tasks */}
-        <div className="flex flex-col gap-2 ">
-          {tasks.map((t) => (
-            <TaskView
-              key={t.id}
-              name={t.name}
-              status={t.status}
-              isSelected={t.id === selectedTask}
-              id={t.id}
-              onClick={setSelectedTask}
-            />
-          ))}
+      {loading ? (
+        <div className="flex flex-col gap-2 my-2">
+          <Skeleton className="w-full h-[50px]" />
+          <Skeleton className="w-full h-[50px]" />
+          <Skeleton className="w-full h-[50px]" />
         </div>
-        {/* completed task */}
-        {/* <CompletedTasks /> */}
-      </ScrollArea>
+      ) : (
+        <ScrollArea className=" flex-1 my-2">
+          {/* tasks */}
+          <div className="flex flex-col gap-2 ">
+            {tasks.map((t) => (
+              <TaskView
+                key={t.id}
+                name={t.name}
+                status={t.status}
+                isSelected={t.id === selectedTask}
+                id={t.id}
+                onClick={setSelectedTask}
+              />
+            ))}
+          </div>
+          {/* completed task */}
+          {/* <CompletedTasks /> */}
+        </ScrollArea>
+      )}
     </div>
   );
 }

@@ -21,7 +21,7 @@ export default function Index() {
       <ResizablePanelGroup direction="horizontal" className="h-full">
         {isLeftSidebarOpen && (
           <>
-            <ResizablePanel minSize={15} order={1}>
+            <ResizablePanel minSize={15} order={1} defaultSize={25}>
               <LeftSidePanel />
             </ResizablePanel>
             <ResizableHandle />
@@ -31,7 +31,7 @@ export default function Index() {
           <MainContent cId={selectedCollection} />
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel minSize={15} order={3}>
+        <ResizablePanel minSize={15} order={3} defaultSize={25}>
           <div className="w-[250px] h-full space-y-3 overflow-auto py-3 "></div>
         </ResizablePanel>
       </ResizablePanelGroup>

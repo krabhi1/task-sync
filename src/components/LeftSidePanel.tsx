@@ -24,7 +24,7 @@ export default function LeftSidePanel() {
   }
 
   return (
-    <div className="w-[250px] h-full overflow-auto flex flex-col">
+    <div className=" h-full overflow-auto flex flex-col">
       <div className="mx-6 my-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Button
