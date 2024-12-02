@@ -2,14 +2,13 @@ import { Menu, PlusIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { useAppStore, useLeftSidebar } from "@/store/app-store";
 import { ScrollArea } from "./ui/scroll-area";
-import TaskView from "./TaskView";
 import CollectionListItem from "./CollectionListItem";
 import { Input } from "./ui/input";
 import { useCollection } from "@/hooks/use-collection";
 import React, { useState } from "react";
 
 export default function LeftSidePanel() {
-  const { isLeftSidebarOpen, toggleLeftSideBar } = useLeftSidebar();
+  const { toggleLeftSideBar } = useLeftSidebar();
   const { collections, addCollection } = useCollection();
   const [inputValue, setInputValue] = useState("");
 
@@ -23,7 +22,6 @@ export default function LeftSidePanel() {
       setInputValue("");
     }
   }
-  if (!isLeftSidebarOpen) return null;
 
   return (
     <div className="w-[250px] h-full overflow-auto flex flex-col">
